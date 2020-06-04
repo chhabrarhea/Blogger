@@ -30,6 +30,10 @@ android {
         androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
         implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.24.1'
         implementation 'com.karumi:dexter:6.1.2'
+        implementation 'com.squareup.picasso:picasso:2.71828'                    //image downloading
+        implementation "androidx.cardview:cardview:1.0.0"
+        implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
     }
     repositories {
         mavenCentral()
@@ -41,4 +45,5 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:+'
     implementation 'androidx.constraintlayout:constraintlayout:+'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }

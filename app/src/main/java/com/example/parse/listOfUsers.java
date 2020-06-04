@@ -247,7 +247,7 @@ tt.setText(ParseUser.getCurrentUser().getUsername());
     }
     public void viewFeed(String username)
     {
-        Intent i=new Intent(listOfUsers.this,feed.class);
+        Intent i=new Intent(listOfUsers.this,basic.class);
         i.putExtra("username",username);
         startActivity(i);
     }
