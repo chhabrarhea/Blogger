@@ -78,9 +78,6 @@ public void capturePhoto()
                   bitmap  = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());}
                 else
                       bitmap = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
-
-
-
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -92,6 +89,7 @@ public void capturePhoto()
                 ParseObject object = new ParseObject("Image");
 
                 object.put("image", file);
+
 
                 object.put("username", ParseUser.getCurrentUser().getUsername());
 

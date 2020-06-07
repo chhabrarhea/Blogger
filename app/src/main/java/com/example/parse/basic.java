@@ -21,6 +21,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class basic extends AppCompatActivity implements Adapter.OnItemClickListener{
@@ -28,6 +29,7 @@ public class basic extends AppCompatActivity implements Adapter.OnItemClickListe
     String username;
     private Adapter exampleAdapter;
     public static ArrayList<Post> example_items;
+    public static ArrayList<String> date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,7 @@ public class basic extends AppCompatActivity implements Adapter.OnItemClickListe
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         example_items = new ArrayList<>();
+         date = new ArrayList<>();
         Intent i = getIntent();
         username = i.getStringExtra("username");
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Image");
@@ -52,6 +55,10 @@ public class basic extends AppCompatActivity implements Adapter.OnItemClickListe
                     Post newItem = new Post(bitmap);
                     example_items.add(newItem);
                 }
+                Date dateCreated=object.getDate("createdAt");
+                String d=dateCreated.toString();
+                date.add(d);
+
 
             }
             exampleAdapter=new Adapter(basic.this,example_items);

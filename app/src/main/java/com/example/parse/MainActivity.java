@@ -18,11 +18,13 @@ import com.parse.LogInCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener,View.OnClickListener  {
         TextView username;
@@ -31,7 +33,8 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         Button sign;
         int l=0,m=0;
         TextView email;
-        public void move()
+        ArrayList<String> usernames;
+    public void move()
         {
             Intent i=new Intent(MainActivity.this,listOfUsers.class);
             startActivity(i);
@@ -60,7 +63,14 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         ParseUser user=new ParseUser();
         String em=email.getText().toString();
         if(username.getText()!=null && password.getText()!=null)
-        { user.setUsername(username.getText().toString());
+        {
+            if(usernames.contains(username.getText()))
+            {
+                Toast.makeText(this, "Username already taken!", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+            user.setUsername(username.getText().toString());
             user.setPassword(password.getText().toString());
             user.setEmail(em);
             user.signUpInBackground(new SignUpCallback() {
@@ -71,10 +81,11 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                     else{
                         Log.i("heyy","loserrrr");
                         e.printStackTrace();
-                        Toast.makeText(MainActivity.this, "ughhhh", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "There  was an error", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
+
             email.animate().alpha(0);
             l=0;
             m=0;
@@ -83,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             email.setText("");
             password.setText("");
             username.setText("");
-        }
+        }}
         else{
             Toast.makeText(MainActivity.this, "Invalid Username/Password/Email", Toast.LENGTH_SHORT).show();
         }
@@ -95,13 +106,27 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Instagram");
-if(ParseUser.getCurrentUser()==null){
+        if(ParseUser.getCurrentUser()==null){
          username=(TextView) findViewById(R.id.name);
          password=(TextView) findViewById(R.id.pass);
          email=(TextView) findViewById(R.id.email);
-        final ArrayList<ParseUser> users=new ArrayList<>();
 
-        login=(Button) findViewById(R.id.login);
+
+         usernames=new ArrayList<>();
+         ParseQuery<ParseUser> pq =new ParseQuery<ParseUser>("user");
+         pq.whereNotEqualTo("username",null);
+            try {
+                List<ParseUser> users= pq.find();
+                for(ParseUser user:users )
+                    usernames.add(user.getUsername());
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+
+            login=(Button) findViewById(R.id.login);
         sign=(Button) findViewById(R.id.sign);
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -153,8 +178,9 @@ if(ParseUser.getCurrentUser()==null){
                 return false;
             }
         });}
-else
-    move();
+else{
+    finish();
+    move();}
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
